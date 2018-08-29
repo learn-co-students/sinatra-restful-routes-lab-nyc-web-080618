@@ -1,0 +1,11 @@
+<% Recipe.all.each do |recipe| %>
+  <%= recipe.ingredients %>
+<% end %>
+
+<form action="/recipes/<%= params[:id] %>" method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  Change Name: <input type="text" name="name" value="">
+  Change Ingredients: <input type="text" name="ingredients" value="">
+  Change Cook Time: <input type="text" name="cook_time" value="">
+  <button type="submit" name="button" id="button">submit</button>
+</form>
