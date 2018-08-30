@@ -1,3 +1,4 @@
+
 class ApplicationController < Sinatra::Base
   configure do
     set :public_folder, 'public'
@@ -6,4 +7,48 @@ class ApplicationController < Sinatra::Base
   get '/' do
     erb :index
   end
+
+  get '/recipes' do
+    @recipes = Recipe.all
+    erb :index
+  end
+
+  ## create action
+    # render a form to create a new book
+  get '/recipes/new' do
+    erb :new
+  end
+  #display one recipe beased on id in the url
+  get '/recipes/:id' do
+    @recipe = Recipe.find(params[:id])
+    erb :show
+  end
+
+  ##edit action
+  #loads edit form
+  get '/recipes/:id/edit' do
+    @recipe = Recipe.find_by_id(params[:id])
+    erb :edit
+  end
+
+
+  patch '/recipes/:id' do   #respond to a patch request from a form
+    @recipe = Recipe.find_by_id(params[:id])
+    @recipe.update(name: params[:name], ingredients: params[:ingredients], cook_time: params[:cook_time])
+    redirect "/recipes/#{@recipe.id}" #back to the show page
+  end
+  #create a new recipe
+  post '/recipes' do
+    @recipe = Recipe.create(params)
+    redirect to "/recipes/#{@recipe.id}"
+
+  end
+
+  delete '/recipes/:id/delete' do
+    Recipe.find(params[:id]).destroy
+    redirect "/recipes"
+  end  
+
+
+
 end
